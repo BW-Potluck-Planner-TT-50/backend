@@ -7,13 +7,17 @@ exports.up = function (knex) {
     })
     .createTable("Events", (tbl) => {
       tbl.increments();
-      tbl.string("event_name").notNullable().unique();
+      tbl.string("event_name").notNullable();
+      tbl.date("date").notNullable();
+      tbl.string("time").notNullable();
+      tbl.string("location").notNullable();
       tbl
         .integer("user_id")
         .unsigned()
         .references("Users.id")
         .onDelete("RESTRICT")
         .onUpdate("CASCADE");
+      tbl.string("invite_code").notNullable().unique();
     })
     .createTable("Attendees", (tbl) => {
       tbl.increments();
