@@ -30,7 +30,7 @@ exports.up = function (knex) {
         tbl
           .integer("event_id")
           .unsigned()
-          .references("Events.id")
+          .references("events.id")
           .onDelete("RESTRICT")
           .onUpdate("CASCADE");
       })
@@ -39,19 +39,19 @@ exports.up = function (knex) {
       tbl
         .integer("food_id")
         .unsigned()
-        .references("Food.id")
+        .references("food.id")
         .onDelete("RESTRICT")
         .onUpdate("CASCADE");
       tbl
         .integer("event_id")
         .unsigned()
-        .references("Events.id")
+        .references("events.id")
         .onDelete("RESTRICT")
         .onUpdate("CASCADE");
       tbl
         .integer("guest_id")
         .unsigned()
-        .references("Guests.id")
+        .references("guests.id")
         .onDelete("RESTRICT")
         .onUpdate("CASCADE");
     });
