@@ -66,7 +66,7 @@ router.post("/events", validateEvent, (req, res) => {
     })
     .catch((error) => {
       // log error to server
-      console.log(error);
+      console.log("ERROR", error);
       res.status(500).json({
         message: "Error adding the event",
       });
@@ -141,6 +141,7 @@ router.get("/events/food/:id", (req, res) => {
     });
 });
 
+// add a new food to an event
 router.post("/events/:id/food", (req, res) => {
   if (!req.body.name) {
     res.status(400).json({ message: "Please provide a name for the food." });
@@ -159,6 +160,97 @@ router.post("/events/:id/food", (req, res) => {
       console.log(error);
       res.status(500).json({
         message: "Error adding food to the event",
+      });
+    });
+});
+
+// delete food by id
+router.delete("/events/food/:id", (req, res) => {
+  Events.removeFood(req.params.id)
+    .then((count) => {
+      if (count > 0) {
+        res.status(200).json({ message: "The food has been deleted" });
+      } else {
+        res.status(404).json({ message: "The food could not be found" });
+      }
+    })
+    .catch((error) => {
+      // log error to server
+      console.log(error);
+      res.status(500).json({
+        message: "Error removing the food",
+      });
+    });
+});
+
+// get all guests that belong to an event
+router.get("/events/:id/guests", (req, res) => {
+  Events.findGuests(req.params.id)
+    .then((guests) => {
+      res.status(200).json(guests);
+    })
+    .catch((error) => {
+      // log error to server
+      console.log(error);
+      res.status(500).json({
+        message: "Error getting event guests",
+      });
+    });
+});
+
+// get guest by id
+router.get("/events/guest/:id", (req, res) => {
+  Events.findGuestById(req.params.id)
+    .then((guest) => {
+      res.status(200).json(guest);
+    })
+    .catch((error) => {
+      // log error to server
+      console.log(error);
+      res.status(500).json({
+        message: "Error getting event guest",
+      });
+    });
+});
+
+// add a new guest to an event
+router.post("/events/:id/guest", (req, res) => {
+  if (!req.body.name) {
+    res.status(400).json({ message: "Please provide a name for the guest." });
+    return;
+  }
+
+  Events.addGuest({
+    name: req.body.name,
+    event_id: req.params.id,
+  })
+    .then((guest) => {
+      res.status(200).json(guest);
+    })
+    .catch((error) => {
+      // log error to server
+      console.log(error);
+      res.status(500).json({
+        message: "Error adding guest to the event",
+      });
+    });
+});
+
+// delete guest by id
+router.delete("/events/guest/:id", (req, res) => {
+  Events.removeGuest(req.params.id)
+    .then((count) => {
+      if (count > 0) {
+        res.status(200).json({ message: "The guest has been deleted" });
+      } else {
+        res.status(404).json({ message: "The guest could not be found" });
+      }
+    })
+    .catch((error) => {
+      // log error to server
+      console.log(error);
+      res.status(500).json({
+        message: "Error removing the guest",
       });
     });
 });

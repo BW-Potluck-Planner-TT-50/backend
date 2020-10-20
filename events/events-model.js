@@ -10,14 +10,12 @@ module.exports = {
   findFood,
   findFoodById,
   addFood,
-
-  removeEventFood,
-  updateFood,
+  removeFood,
   findGuests,
   findGuestById,
+  findGuestByNameAndCode,
   addGuest,
   removeGuest,
-  updateGuest,
 };
 
 function findByUserId(userId) {
@@ -72,21 +70,22 @@ async function addFood(food) {
   return await db("food").where({ id }).first();
 }
 
-
-
-
-
-
-function removeEventFood(id) {
-  return db("eventFood").where({ id }).del();
-}
-
-function updateFood(id, changes) {
-  return db("food").where({ id }).update(changes, "*");
+function removeFood(id) {
+  return db("food").where({ id }).del();
 }
 
 function findGuests(eventId) {
-  return db("guests").where("events as e", "e.id", eventId);
+  return db("guests").where("event_id", eventId);
+}
+
+async function findGuestByNameAndCode(name, inviteCode) {
+  const event = await db("events").where("invite_code", inviteCode).first();
+
+  if (!event) {
+    return null;
+  }
+
+  return db("guests").where("event_id", event.id).where("name", name).first();
 }
 
 function findGuestById(id) {
@@ -101,8 +100,4 @@ async function addGuest(guest) {
   const [id] = await db("guests").insert(guest);
 
   return findGuestById(id);
-}
-
-function updateGuest(id, changes) {
-  return db("guests").where({ id }).update(changes, "*");
 }
