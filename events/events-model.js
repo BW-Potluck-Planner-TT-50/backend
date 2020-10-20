@@ -30,7 +30,7 @@ async function add(event) {
   const [id] = await db("events").insert({
     ...event,
     invite_code: shortid.generate(),
-  });
+  }, "id");
 
   return findById(id);
 }
@@ -65,7 +65,7 @@ async function addFood(food) {
   if (foodExists) {
     return foodExists;
   }
-  const [id] = await db("food").insert(food);
+  const [id] = await db("food").insert(food, "id");
 
   return await db("food").where({ id }).first();
 }
@@ -97,7 +97,7 @@ function removeGuest(id) {
 }
 
 async function addGuest(guest) {
-  const [id] = await db("guests").insert(guest);
+  const [id] = await db("guests").insert(guest, "id");
 
   return findGuestById(id);
 }
