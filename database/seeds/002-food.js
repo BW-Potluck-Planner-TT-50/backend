@@ -1,5 +1,5 @@
 exports.seed = function(knex, Promise) {
-  return knex('Food').insert([
+  return knex('food').insert([
     { food_name: 'Spaghetti' },
     { food_name: 'Chicken Pot Pie' },
     { food_name: 'Fruit Salad' },

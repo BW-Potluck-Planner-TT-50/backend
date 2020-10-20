@@ -1,6 +1,6 @@
 
 exports.seed = function(knex, Promise) {
-  return knex('Users').insert([
+  return knex('users').insert([
     { username: 'slimShady', password: 'password123' },
   ]);
 };

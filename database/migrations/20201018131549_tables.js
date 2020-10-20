@@ -1,11 +1,11 @@
 exports.up = function (knex) {
   return knex.schema
-    .createTable("Users", (tbl) => {
+    .createTable("users", (tbl) => {
       tbl.increments();
       tbl.string("username", 128).unique().notNullable().index();
       tbl.string("password", 256).notNullable();
     })
-    .createTable("Events", (tbl) => {
+    .createTable("events", (tbl) => {
       tbl.increments();
       tbl.string("event_name").notNullable();
       tbl.date("date").notNullable();
@@ -14,16 +14,16 @@ exports.up = function (knex) {
       tbl
         .integer("user_id")
         .unsigned()
-        .references("Users.id")
+        .references("users.id")
         .onDelete("RESTRICT")
         .onUpdate("CASCADE");
       tbl.string("invite_code").notNullable().unique();
     })
-    .createTable("Food", (tbl) => {
+    .createTable("food", (tbl) => {
       tbl.increments();
       tbl.string("food_name").notNullable().unique().index();
     })
-    .createTable("Guests", (tbl) => {
+    .createTable("guests", (tbl) => {
         tbl.increments();
         tbl.string("name", 128).unique().notNullable().index();
         tbl.boolean("RSVP").defaultTo(false);
@@ -34,7 +34,7 @@ exports.up = function (knex) {
           .onDelete("RESTRICT")
           .onUpdate("CASCADE");
       })
-    .createTable("EventFood", (tbl) => {
+    .createTable("eventFood", (tbl) => {
       tbl.increments();
       tbl
         .integer("food_id")
@@ -59,9 +59,9 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
   return knex.schema
-    .dropTableIfExists("EventFood")
-    .dropTableIfExists("Guests")
-    .dropTableIfExists("Food")
-    .dropTableIfExists("Events")
-    .dropTableIfExists("Users");
+    .dropTableIfExists("eventFood")
+    .dropTableIfExists("guests")
+    .dropTableIfExists("food")
+    .dropTableIfExists("events")
+    .dropTableIfExists("users");
 };
