@@ -1,3 +1,4 @@
+const shortid = require("shortid");
 const db = require("../database/connection.js");
 
 module.exports = {
@@ -6,9 +7,10 @@ module.exports = {
   add,
   remove,
   update,
-  findEventFood,
-  findEventFoodById,
+  findFood,
+  findFoodById,
   addFood,
+
   removeEventFood,
   updateFood,
   findGuests,
@@ -18,8 +20,8 @@ module.exports = {
   updateGuest,
 };
 
-function findByUserId(events, userId) {
-  return db("events").where(user.id);
+function findByUserId(userId) {
+  return db("events").where({ user_id: userId });
 }
 
 function findById(id) {
@@ -27,35 +29,53 @@ function findById(id) {
 }
 
 async function add(event) {
-  const [id] = await db("events").insert(event);
+  const [id] = await db("events").insert({
+    ...event,
+    invite_code: shortid.generate(),
+  });
 
   return findById(id);
 }
 
-function remove(id) {
-  return db("events").where({ id }).del();
+function remove(id, userId) {
+  // we ask for the user id here to make sure users can only delete their own
+  // events. this way people can't just delete anyone else's event
+  return db("events").where({ id, user_id: userId }).del();
 }
 
-function update(id, changes) {
-  return db("events").where({ id }).update(changes, "*");
+async function update(id, userId, changes) {
+  await db("events").where({ id, user_id: userId }).update(changes);
+
+  return findById(id);
 }
 
-function findEventFood(eventId) {
-  return db("food as f")
-    .join("events as e", "f.event_id", "e.id")
-    .select("f.*")
-    .where("e.id", eventId);
+function findFood(eventId) {
+  return db("food").where("event_id", eventId);
 }
 
-function findEventFoodById(id) {
-  return db("eventFood").where({ id }).first();
-}
-
+function findFoodById(id) {
+    return db("food").where({ id }).first();
+  }
+  
 async function addFood(food) {
+  // find out if the food exists
+  const foodExists = await db("food")
+    .where("name", food.name)
+    .where("event_id", food.event_id)
+    .first();
+
+  if (foodExists) {
+    return foodExists;
+  }
   const [id] = await db("food").insert(food);
 
-  return findEventFoodById(id);
+  return await db("food").where({ id }).first();
 }
+
+
+
+
+
 
 function removeEventFood(id) {
   return db("eventFood").where({ id }).del();

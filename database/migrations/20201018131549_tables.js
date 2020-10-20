@@ -7,7 +7,7 @@ exports.up = function (knex) {
     })
     .createTable("events", (tbl) => {
       tbl.increments();
-      tbl.string("event_name").notNullable();
+      tbl.string("name").notNullable();
       tbl.date("date").notNullable();
       tbl.string("time").notNullable();
       tbl.string("location").notNullable();
@@ -21,27 +21,7 @@ exports.up = function (knex) {
     })
     .createTable("food", (tbl) => {
       tbl.increments();
-      tbl.string("food_name").notNullable().unique().index();
-    })
-    .createTable("guests", (tbl) => {
-        tbl.increments();
-        tbl.string("name", 128).unique().notNullable().index();
-        tbl.boolean("RSVP").defaultTo(false);
-        tbl
-          .integer("event_id")
-          .unsigned()
-          .references("events.id")
-          .onDelete("RESTRICT")
-          .onUpdate("CASCADE");
-      })
-    .createTable("eventFood", (tbl) => {
-      tbl.increments();
-      tbl
-        .integer("food_id")
-        .unsigned()
-        .references("food.id")
-        .onDelete("RESTRICT")
-        .onUpdate("CASCADE");
+      tbl.string("name").notNullable().unique().index();
       tbl
         .integer("event_id")
         .unsigned()
@@ -49,12 +29,24 @@ exports.up = function (knex) {
         .onDelete("RESTRICT")
         .onUpdate("CASCADE");
       tbl
-        .integer("guest_id")
-        .unsigned()
-        .references("guests.id")
-        .onDelete("RESTRICT")
-        .onUpdate("CASCADE");
-    });
+      .integer("guest_id")
+      .unsigned()
+      .references("guests.id")
+      .onDelete("RESTRICT")
+      .onUpdate("CASCADE");
+
+    })
+    .createTable("guests", (tbl) => {
+        tbl.increments();
+        tbl.string("name", 128).unique().notNullable().index();
+        tbl.boolean("rsvp").defaultTo(false);
+        tbl
+          .integer("event_id")
+          .unsigned()
+          .references("events.id")
+          .onDelete("RESTRICT")
+          .onUpdate("CASCADE");
+      })
 };
 
 exports.down = function (knex) {

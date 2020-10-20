@@ -1,12 +1,14 @@
 const express = require("express");
 const Events = require("./events-model.js");
-const restricted = require("../auth/restricted-middleware")
+const restricted = require("../auth/restricted-middleware");
 
 const router = express.Router();
 
-// this only runs if the url has /api/events/:id in it
-router.get("/events/:id", (req, res) => {
-  Events.findByUserId(req.query)
+router.use(restricted);
+
+// get all events that belong to the signed-in user
+router.get("/events", (req, res) => {
+  Events.findByUserId(req.jwt.userId)
     .then((events) => {
       res.status(200).json(events);
     })
@@ -19,12 +21,15 @@ router.get("/events/:id", (req, res) => {
     });
 });
 
-// /api/event/:id
-
-router.get("/event/:id", (req, res) => {
+// get an event by id
+router.get("/events/:id", (req, res) => {
   Events.findById(req.params.id)
     .then((event) => {
       if (event) {
+        // make sure this event belongs to the signed-in user
+        if (event.user_id !== req.jwt.userId) {
+          res.status(404).json({ message: "Event not found" });
+        }
         res.status(200).json(event);
       } else {
         res.status(404).json({ message: "Event not found" });
@@ -39,18 +44,23 @@ router.get("/event/:id", (req, res) => {
     });
 });
 
-function validatePost(req, res, next) {
-  if (req.body.name) {
+function validateEvent(req, res, next) {
+  if (req.body.name && req.body.date && req.body.time && req.body.location) {
     next();
   } else {
     res.status(400).json({ message: "Please provide a name for the event." });
   }
-};
+}
 
-
-router.post("/events", restricted, validatePost, (req, res) => {
-
-  Events.add(req.body)
+// add a new event
+router.post("/events", validateEvent, (req, res) => {
+  Events.add({
+    name: req.body.name,
+    date: req.body.date,
+    time: req.body.time,
+    location: req.body.location,
+    user_id: req.jwt.userId,
+  })
     .then((event) => {
       res.status(201).json(event);
     })
@@ -63,71 +73,92 @@ router.post("/events", restricted, validatePost, (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
-  Hubs.remove(req.params.id)
+// update an event by id
+router.put("/events/:id", validateEvent, (req, res) => {
+  Events.update(req.params.id, req.jwt.userId, req.body)
+    .then((event) => {
+      if (event) {
+        res.status(200).json(event);
+      } else {
+        res.status(404).json({ message: "The event could not be found" });
+      }
+    })
+    .catch((error) => {
+      // log error to server
+      console.log(error);
+      res.status(500).json({
+        message: "Error updating the event",
+      });
+    });
+});
+
+// delete an event by id
+router.delete("/events/:id", (req, res) => {
+  Events.remove(req.params.id, req.jwt.userId)
     .then((count) => {
       if (count > 0) {
-        res.status(200).json({ message: "The hub has been nuked" });
+        res.status(200).json({ message: "The event has been deleted" });
       } else {
-        res.status(404).json({ message: "The hub could not be found" });
+        res.status(404).json({ message: "The event could not be found" });
       }
     })
     .catch((error) => {
       // log error to server
       console.log(error);
       res.status(500).json({
-        message: "Error removing the hub",
+        message: "Error removing the event",
       });
     });
 });
 
-router.put("/:id", (req, res) => {
-  Hubs.update(req.params.id, req.body)
-    .then((hub) => {
-      if (hub) {
-        res.status(200).json(hub);
-      } else {
-        res.status(404).json({ message: "The hub could not be found" });
-      }
+// get all food that belongs to an event
+router.get("/events/:id/food", (req, res) => {
+  Events.findFood(req.params.id)
+    .then((eventFood) => {
+      res.status(200).json(eventFood);
     })
     .catch((error) => {
       // log error to server
       console.log(error);
       res.status(500).json({
-        message: "Error updating the hub",
+        message: "Error getting event food",
       });
     });
 });
 
-// add an endpoint that returns all the messages for a hub
-// this is a sub-route or sub-resource
-router.get("/:id/messages", (req, res) => {
-  Hubs.findHubMessages(req.params.id)
-    .then((messages) => {
-      res.status(200).json(messages);
+// get food by id
+router.get("/events/food/:id", (req, res) => {
+  Events.findFoodById(req.params.id)
+    .then((eventFood) => {
+      res.status(200).json(eventFood);
     })
     .catch((error) => {
       // log error to server
       console.log(error);
       res.status(500).json({
-        message: "Error getting the messages for the hub",
+        message: "Error getting event food",
       });
     });
 });
 
-// add an endpoint for adding new message to a hub
-router.post("/:id/messages", (req, res) => {
-  const messageInfo = { ...req.body, hub_id: req.params.id };
+router.post("/events/:id/food", (req, res) => {
+  if (!req.body.name) {
+    res.status(400).json({ message: "Please provide a name for the food." });
+    return;
+  }
 
-  Messages.add(messageInfo)
-    .then((message) => {
-      res.status(210).json(message);
+  Events.addFood({
+    name: req.body.name,
+    event_id: req.params.id,
+  })
+    .then((eventFood) => {
+      res.status(200).json(eventFood);
     })
     .catch((error) => {
       // log error to server
       console.log(error);
       res.status(500).json({
-        message: "Error getting the messages for the hub",
+        message: "Error adding food to the event",
       });
     });
 });
