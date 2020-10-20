@@ -60,8 +60,8 @@ exports.up = function (knex) {
 exports.down = function (knex) {
   return knex.schema
     .dropTableIfExists("EventFood")
+    .dropTableIfExists("Guests")
     .dropTableIfExists("Food")
-    .dropTableIfExists("Attendees")
     .dropTableIfExists("Events")
     .dropTableIfExists("Users");
 };

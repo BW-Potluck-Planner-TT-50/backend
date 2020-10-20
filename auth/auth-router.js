@@ -60,6 +60,7 @@ router.post("/login", (req, res) => {
 
 function getJwt(user) {
     const payload = {
+        userId: user.id,
         username: user.username,
     };
 
