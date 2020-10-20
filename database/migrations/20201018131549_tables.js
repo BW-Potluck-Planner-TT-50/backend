@@ -28,7 +28,7 @@ exports.up = function (knex) {
         tbl.string("name", 128).unique().notNullable().index();
         tbl.boolean("RSVP").defaultTo(false);
         tbl
-          .string("event_id")
+          .integer("event_id")
           .unsigned()
           .references("Events.id")
           .onDelete("RESTRICT")
