@@ -31,3 +31,14 @@ API hosted at: https://bw-potluck-planner-tt50.herokuapp.com
 | POST   | /api/events/:id/food   | Add a new food to the event                 |
 | GET    | /api/events/food/:id   | Get food by id                              |
 | DELETE | /api/events/food/:id   | Delete food                                 |
+
+Guest List Add/Delete
+------------------------
+API hosted at: https://bw-potluck-planner-tt50.herokuapp.com
+### Guest List Endpoints 
+| Method | Endpoint                     | Description                                 |
+| ------ | ---------------------------  | --------------------------------------------|
+| GET    | /api/events/:id/guest-list   | Get all of the event's guest list           |
+| POST   | /api/events/:id/guest-list   | Add a new guest to the event                |
+| GET    | /api/events/guest-list/:id   | Get guest by id                             |
+| DELETE | /api/events/guest-list/:id   | Delete guest                                |

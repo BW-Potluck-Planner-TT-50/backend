@@ -184,7 +184,7 @@ router.delete("/events/food/:id", (req, res) => {
 });
 
 // get all guests that belong to an event
-router.get("/events/:id/guests", (req, res) => {
+router.get("/events/:id/guest-list", (req, res) => {
   Events.findGuests(req.params.id)
     .then((guests) => {
       res.status(200).json(guests);
@@ -199,7 +199,7 @@ router.get("/events/:id/guests", (req, res) => {
 });
 
 // get guest by id
-router.get("/events/guest/:id", (req, res) => {
+router.get("/events/guest-list/:id", (req, res) => {
   Events.findGuestById(req.params.id)
     .then((guest) => {
       res.status(200).json(guest);
@@ -214,7 +214,7 @@ router.get("/events/guest/:id", (req, res) => {
 });
 
 // add a new guest to an event
-router.post("/events/:id/guest", (req, res) => {
+router.post("/events/:id/guest-list", (req, res) => {
   if (!req.body.name) {
     res.status(400).json({ message: "Please provide a name for the guest." });
     return;
@@ -237,7 +237,7 @@ router.post("/events/:id/guest", (req, res) => {
 });
 
 // delete guest by id
-router.delete("/events/guest/:id", (req, res) => {
+router.delete("/events/guest-list/:id", (req, res) => {
   Events.removeGuest(req.params.id)
     .then((count) => {
       if (count > 0) {
