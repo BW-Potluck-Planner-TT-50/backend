@@ -37,7 +37,7 @@ exports.up = function (knex) {
         .integer("event_id")
         .unsigned()
         .references("events.id")
-        .onDelete("RESTRICT")
+        .onDelete("CASCADE")
         .onUpdate("CASCADE");
       tbl
         .integer("guest_id")

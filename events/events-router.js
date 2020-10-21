@@ -248,7 +248,7 @@ router.delete("/events/guest/:id", (req, res) => {
     })
     .catch((error) => {
       // log error to server
-      console.log(error);
+      console.log("ERROR", error);
       res.status(500).json({
         message: "Error removing the guest",
       });
