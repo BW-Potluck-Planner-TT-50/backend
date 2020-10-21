@@ -33,6 +33,7 @@ function getJwt(guest) {
     const payload = {
         guestId: guest.id,
         name: guest.name,
+        eventId: guest.event_id
     };
 
     const jwtOptions = {
