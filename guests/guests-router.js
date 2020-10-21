@@ -22,7 +22,14 @@ router.get("/guest", (req, res) => {
 
 // update guest info
 router.put("/guest", (req, res) => {
-  Guests.updateGuestInvite(req.params.id, req.jwt.guestId, req.body.rsvp)
+  if (!req.body.foodId || req.body.rsvp === undefined) {
+    return res.status(400).json({ message: "Please select a food and RSVP" })
+  }
+
+  console.log("guestid", req.jwt.guestId)
+  console.log("foodid", req.body.foodId)
+  console.log("rsvp", req.body.rsvp)
+  Guests.updateGuestInvite(req.jwt.guestId, req.body.foodId, req.body.rsvp)
     .then((guest) => {
       if (guest) {
         res.status(200).json(guest);
@@ -31,8 +38,8 @@ router.put("/guest", (req, res) => {
       }
     })
     .catch((error) => {
-      // log error to server
-      console.log(error);
+      console.log("ERROR", error);
+      console.log("ERROR", error);
       res.status(500).json({
         message: "Error updating guest's information.",
       });

@@ -50,3 +50,11 @@ API hosted at: https://bw-potluck-planner-tt50.herokuapp.com
 | Method | Endpoint              | Description                                    |
 | ------ | --------------------- | -----------------------------------------------|
 | POST   | /api/auth-guest/login | Allows guest to login to RSVP and choose food  |
+
+Guest Page 
+----------------------------------
+API hosted at: https://bw-potluck-planner-tt50.herokuapp.com
+### Guest Read/Update Endpoints 
+| Method | Endpoint              | Description                                    |
+| ------ | --------------------- | -----------------------------------------------|
+| GET    | /api/guest            | Gets the signed in guest's information         |
