@@ -22,7 +22,7 @@ router.get("/guest", (req, res) => {
 
 // update guest info
 router.put("/guest/:id", (req, res) => {
-  Guests.update(req.params.id, req.jwt.guestId, req.body)
+  Guests.updateGuestInvite(req.params.id, req.jwt.guestId, req.body)
     .then((guest) => {
       if (guest) {
         res.status(200).json(guest);
