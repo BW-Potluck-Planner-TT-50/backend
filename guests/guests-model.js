@@ -3,8 +3,8 @@ const db = require("../database/connection.js");
 module.exports = {
   findById,
   findEvent,
-  findEventFood,
-  update
+  findAllEventFood,
+  updateGuestInvite
 };
 
 function findById(guestId) {
