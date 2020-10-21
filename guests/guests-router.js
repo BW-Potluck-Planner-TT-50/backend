@@ -21,7 +21,7 @@ router.get("/guest", (req, res) => {
 });
 
 // update guest info
-router.put("/guest/:id", (req, res) => {
+router.put("/guest", (req, res) => {
   Guests.updateGuestInvite(req.params.id, req.jwt.guestId, req.body.rsvp)
     .then((guest) => {
       if (guest) {

@@ -47,6 +47,6 @@ Guest Login
 ----------------------------------
 API hosted at: https://bw-potluck-planner-tt50.herokuapp.com
 ### Guest Login/Referral Code Endpoints 
-| Method | Endpoint              | Description                                 |
-| ------ | --------------------- | --------------------------------------------|
-| POST   | /api/auth-guest/login | Allows organizer to login to their account  |
+| Method | Endpoint              | Description                                    |
+| ------ | --------------------- | -----------------------------------------------|
+| POST   | /api/auth-guest/login | Allows guest to login to RSVP and choose food  |
