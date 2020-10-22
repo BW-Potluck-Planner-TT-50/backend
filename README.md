@@ -55,6 +55,10 @@ Guest Page
 ----------------------------------
 API hosted at: https://bw-potluck-planner-tt50.herokuapp.com
 ### Guest Read/Update Endpoints 
-| Method | Endpoint              | Description                                    |
-| ------ | --------------------- | -----------------------------------------------|
-| GET    | /api/guest            | Gets the signed in guest's information         |
+| Method | Endpoint              | Description                                      |
+| ------ | --------------------- | -----------------------------------------------  |
+| GET    | /api/guest            | Gets the signed in guest's information           |                                              |
+| PUT    | /api/guest            | Update Guest RSVP to true and select food        |
+|        |                       | (must pass in guest id and selected food id)     |
+| GET    | /api/guest/events     | Render event info to the page for the guest      |
+| GET    | /api/guest/food       | Render food to the page for the guest to select  |

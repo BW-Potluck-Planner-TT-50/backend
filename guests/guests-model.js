@@ -28,6 +28,6 @@ function findEvent(eventId) {
 }
 
 function findAllEventFood(eventId) {
-  return db("food").where({ id: eventId });
+  return db("food").where({ event_id: eventId });
 }
 
