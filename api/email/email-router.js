@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const nodemailer = require("nodemailer")
+const { tokenVerified } = require("../auth/restricted-middleware")
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -11,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 const { getGuest, getAllGuests } = require("./email-model")
 
-router.get("/all/:id", async (req, res) => {
+router.get("/all/:id", tokenVerified, async (req, res) => {
   const { id } = req.params
   const guests = await getAllGuests(id)
   guests.forEach((guest) => {
@@ -33,7 +34,7 @@ router.get("/all/:id", async (req, res) => {
   res.status(200).json({ message: "Email sent to all guests" })
 })
 
-router.get("/single/:id", async (req, res) => {
+router.get("/single/:id", tokenVerified, async (req, res) => {
   const { id } = req.params
   const [guest] = await getGuest(id)
   if (guest) {
