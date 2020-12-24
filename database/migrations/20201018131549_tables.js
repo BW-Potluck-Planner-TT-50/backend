@@ -21,7 +21,7 @@ exports.up = function (knex) {
     })
     .createTable("guests", (tbl) => {
       tbl.increments()
-      tbl.string("name", 128).notNullable()
+      tbl.string("email", 128).notNullable()
       tbl.boolean("rsvp").defaultTo(false)
       tbl
         .integer("event_id")

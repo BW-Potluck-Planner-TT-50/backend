@@ -25,9 +25,6 @@ router.get("/:id", tokenVerified, (req, res) => {
     .then((event) => {
       if (event) {
         // make sure this event belongs to the signed-in user
-        if (event.user_id !== req.jwt.userId) {
-          res.status(404).json({ message: "Event not found" })
-        }
         res.status(200).json(event)
       } else {
         res.status(404).json({ message: "Event not found" })
@@ -118,11 +115,11 @@ router.get("/:id/guest-list", tokenVerified, (req, res) => {
 
 // add a new guest to an event
 router.post("/:id/guest-list", tokenVerified, (req, res) => {
-  if (!req.body.name) {
+  if (!req.body.email) {
     res.status(400).json({ message: "Please provide a name for the guest." })
   }
   Events.addGuest({
-    name: req.body.name,
+    email: req.body.email,
     event_id: req.params.id,
   })
     .then((guest) => {
