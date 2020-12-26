@@ -1,4 +1,3 @@
-const shortid = require("shortid")
 const db = require("../../database/connection.js")
 
 function findByUserId(userId) {
@@ -54,12 +53,8 @@ function removeGuest(id) {
 }
 
 async function addGuest(guest) {
-  try {
-    const [id] = await db("guests").insert(guest)
-    return findGuestById(id)
-  } catch (error) {
-    return error.message
-  }
+  const [id] = await db("guests").insert(guest)
+  return findGuestById(id)
 }
 
 module.exports = {
