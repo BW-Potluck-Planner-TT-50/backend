@@ -54,7 +54,7 @@ function removeGuest(id) {
 
 async function addGuest(guest) {
   try {
-    return db("guests").insert(guest).then(([id]) => findGuestById(id))
+    return db("guests").insert(guest).then(([id]) => db("guests").where({ id }).first())
   } catch (error) {
     return error.message
   }
