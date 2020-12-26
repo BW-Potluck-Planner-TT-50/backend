@@ -16,8 +16,12 @@ function findById(id) {
 }
 
 async function add(user) {
-  const [id] = await db("users").insert(user)
-  return findById(id)
+  try {
+    const [id] = await db("users").insert(user)
+    return findById(id)
+  } catch (error) {
+    return error.message
+  }
 }
 
 module.exports = {

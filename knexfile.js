@@ -1,4 +1,4 @@
-const pgConnection = process.env.DATABASE_URL || "postgres://ldpnmfwcednyuf:9c4e0176fe9cf3e5828db9953062a0ffb8394c6db23a19897af8eb6d9bee22eb@ec2-18-214-119-135.compute-1.amazonaws.com:5432/dc6lidina0ui1g"
+const pgConnection = process.env.DATABASE_URL || "postgres://jqklfjghgonzws:6120ebd1e6e5020175e76cad5f24fb227e213aa1b55e42baa5f703c5f075942e@ec2-3-220-98-137.compute-1.amazonaws.com:5432/dc29sg6ilieomc"
 
 module.exports = {
   development: {

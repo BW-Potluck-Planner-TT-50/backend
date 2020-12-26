@@ -3,15 +3,19 @@ const { jwtSecret } = require("../config.js")
 const { checkIfEmailExists } = require("./auth-model")
 
 const validRegistration = async (req, res, next) => {
-  if (!req.body.username || !req.body.email || !req.body.password) {
-    res.status(401).json({ message: "Request must include username, email, and password" })
-  } else {
-    const email = await checkIfEmailExists(req.body.email)
-    if (email.length > 0) {
-      res.status(401).json({ message: "This email already has an account associated with it" })
+  try {
+    if (!req.body.username || !req.body.email || !req.body.password) {
+      res.status(401).json({ message: "Request must include username, email, and password" })
     } else {
-      next()
+      const email = await checkIfEmailExists(req.body.email)
+      if (email.length > 0) {
+        res.status(401).json({ message: "This email already has an account associated with it" })
+      } else {
+        next()
+      }
     }
+  } catch (error) {
+    res.status(400).json({ message: error.message })
   }
 }
 
