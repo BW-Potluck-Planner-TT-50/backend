@@ -53,11 +53,16 @@ function removeGuest(id) {
 }
 
 async function addGuest(guest) {
-  const [id] = await db("guests").insert(guest)
-  return findGuestById(id)
+  try {
+    const [id] = await db("guests").insert(guest)
+    return findGuestById(id)
+  } catch (error) {
+    return error.message
+  }
 }
 
 module.exports = {
+  addGuest,
   findByUserId,
   findById,
   add,
@@ -66,6 +71,5 @@ module.exports = {
   findGuests,
   findGuestById,
   findGuestByCode,
-  addGuest,
   removeGuest,
 }
