@@ -55,7 +55,11 @@ function removeGuest(id) {
 
 async function addGuest(guest) {
   try {
-    const [id] = await db("guests").insert({ ...guest, invite_code: shortid.generate() })
+    const guestObject = {
+      ...guest,
+      invite_code: shortid.generate(),
+    }
+    const [id] = await db("guests").insert(guestObject)
     return findGuestById(id)
   } catch (error) {
     return error.message
