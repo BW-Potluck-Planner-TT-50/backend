@@ -1,4 +1,5 @@
 const express = require("express")
+const shortid = require("shortid")
 const Events = require("./events-model.js")
 const { tokenVerified, validateEvent } = require("../auth/restricted-middleware")
 
@@ -116,11 +117,12 @@ router.get("/:id/guest-list", tokenVerified, (req, res) => {
 // add a new guest to an event
 router.post("/:id/guest-list", tokenVerified, (req, res) => {
   if (!req.body.email) {
-    res.status(400).json({ message: "Please provide a name for the guest." })
+    res.status(400).json({ message: "Please provide an email for the guest." })
   }
   Events.addGuest({
     email: req.body.email,
     event_id: req.params.id,
+    invite_code: shortid.generate(),
   })
     .then((guest) => {
       res.status(200).json(guest)
