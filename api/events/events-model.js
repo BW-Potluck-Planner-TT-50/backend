@@ -58,7 +58,7 @@ async function addGuest(guest) {
     const theGuest = guest
     theGuest.invite_code = shortid.generate()
     const [id] = await db("guests").insert(theGuest)
-    return findGuestById(id)
+    return db("guests").where({ id })
   } catch (error) {
     return error.message
   }
