@@ -46,7 +46,7 @@ async function findGuestByCode(inviteCode) {
 }
 
 function findGuestById(id) {
-  return db("guests").where({ id }).first()
+  return db("guests").where({ id })
 }
 
 function removeGuest(id) {
