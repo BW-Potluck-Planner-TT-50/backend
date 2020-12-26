@@ -5,11 +5,14 @@ function findById(guestId) {
 }
 
 async function updateGuestInvite(guestId, food, rsvp) {
-  await db("guests").where("id", guestId).update({
-    rsvp, food,
-  })
-
-  return findById(guestId)
+  try {
+    await db("guests").where("id", guestId).update({
+      rsvp, food,
+    })
+    return findById(guestId)
+  } catch (error) {
+    return error.message
+  }
 }
 
 function findEvent(eventId) {

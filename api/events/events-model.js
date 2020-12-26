@@ -10,8 +10,12 @@ function findById(id) {
 }
 
 async function add(event) {
-  const [id] = await db("events").insert(event)
-  return findById(id)
+  try {
+    const [id] = await db("events").insert(event)
+    return findById(id)
+  } catch (error) {
+    return error.message
+  }
 }
 
 function remove(id, userId) {
@@ -21,36 +25,12 @@ function remove(id, userId) {
 }
 
 async function update(id, userId, changes) {
-  await db("events").where({ id, user_id: userId }).update(changes)
-
-  return findById(id)
-}
-
-function findFood(eventId) {
-  return db("food").where("event_id", eventId)
-}
-
-function findFoodById(id) {
-  return db("food").where({ id }).first()
-}
-
-async function addFood(food) {
-  // find out if the food exists
-  const foodExists = await db("food")
-    .where("name", food.name)
-    .where("event_id", food.event_id)
-    .first()
-
-  if (foodExists) {
-    return foodExists
+  try {
+    await db("events").where({ id, user_id: userId }).update(changes)
+    return findById(id)
+  } catch (error) {
+    return error.message
   }
-  const [id] = await db("food").insert(food)
-
-  return db("food").where({ id }).first()
-}
-
-function removeFood(id) {
-  return db("food").where({ id }).del()
 }
 
 function findGuests(eventId) {
@@ -58,7 +38,11 @@ function findGuests(eventId) {
 }
 
 async function findGuestByCode(inviteCode) {
-  return db("guests").where("invite_code", inviteCode)
+  try {
+    return db("guests").where("invite_code", inviteCode)
+  } catch (error) {
+    return error.message
+  }
 }
 
 function findGuestById(id) {
@@ -70,8 +54,12 @@ function removeGuest(id) {
 }
 
 async function addGuest(guest) {
-  const [id] = await db("guests").insert({ ...guest, invite_code: shortid.generate() })
-  return findGuestById(id)
+  try {
+    const [id] = await db("guests").insert({ ...guest, invite_code: shortid.generate() })
+    return findGuestById(id)
+  } catch (error) {
+    return error.message
+  }
 }
 
 module.exports = {
@@ -80,10 +68,6 @@ module.exports = {
   add,
   remove,
   update,
-  findFood,
-  findFoodById,
-  addFood,
-  removeFood,
   findGuests,
   findGuestById,
   findGuestByCode,
