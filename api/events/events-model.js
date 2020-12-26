@@ -44,7 +44,7 @@ async function findGuestByCode(inviteCode) {
   }
 }
 
-function findGuestById(id) {
+async function findGuestById(id) {
   return db("guests").where({ id }).first()
 }
 
@@ -54,8 +54,8 @@ function removeGuest(id) {
 
 async function addGuest(guest) {
   try {
-    const [id] = await db("guests").insert(guest);
-    return findGuestById(id);
+    const id = await db("guests").insert(guest);
+    return findGuestById(id[0]);
   } catch (error) {
     return error.message
   }
