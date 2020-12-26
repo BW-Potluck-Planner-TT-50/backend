@@ -55,7 +55,7 @@ function removeGuest(id) {
 async function addGuest(guest) {
   try {
     const id = await db("guests").insert(guest);
-    return findGuestById(id[0]);
+    return findGuestById(id);
   } catch (error) {
     return error.message
   }
