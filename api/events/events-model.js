@@ -10,8 +10,7 @@ function findById(id) {
 
 async function add(event) {
   try {
-    const [id] = await db("events").insert(event)
-    return findById(id)
+    return await db("events").insert(event)
   } catch (error) {
     return error.message
   }

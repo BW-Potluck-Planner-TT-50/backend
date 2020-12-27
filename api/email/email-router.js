@@ -21,7 +21,7 @@ router.get("/all/:id", tokenVerified, async (req, res) => {
         from: "potluckplannerapp@gmail.com",
         to: guest.email,
         subject: "You have been invited to an event!",
-        html: `<h1>Welcome</h1><p>You have been invited to an event please go to <a href="potluckplanner.com/guest-invite">potluckplanner.com</a> and use<p><br><strong>Invite Code: ${guest.invite_code}</strong>`,
+        html: `<h1>Welcome ${guest.email.split("@")[0]}</h1><p>You have been invited to an event please <a href="https://plan-your-potluck.netlify.app/join-event">Click Here</a> and use<p><br><strong>Invite Code: ${guest.invite_code}</strong> to RSVP and select the food you will be bringing to the event`,
       }
 
       transporter.sendMail(mailOptions, (error, info) => {
@@ -47,7 +47,7 @@ router.get("/single/:id", tokenVerified, async (req, res) => {
         from: "potluckplannerapp@gmail.com",
         to: guest.email,
         subject: "You have been invited to an event!",
-        html: `<h1>Welcome</h1><p>You have been invited to an event please go to <a href="potluckplanner.com/guest-invite">potluckplanner.com</a> and use<p><br><strong>Invite Code: ${guest.invite_code}</strong>`,
+        html: `<h1>Welcome ${guest.email.split("@")[0]}</h1><p>You have been invited to an event please <a href="https://plan-your-potluck.netlify.app/join-event">Click Here</a> and use<p><br><strong>Invite Code: ${guest.invite_code}</strong> to RSVP and select the food you will be bringing to the event`,
       }
 
       transporter.sendMail(mailOptions, (error, info) => {
