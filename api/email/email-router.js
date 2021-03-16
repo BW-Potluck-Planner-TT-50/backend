@@ -25,7 +25,7 @@ router.get("/all/:id", tokenVerified, async (req, res) => {
         html: `<h1>Welcome ${
           guest.email.split("@")[0]
         }</h1><p>You have been invited to an event please <a href=${
-          process.env.JOIN_EVENT_LINK_LOCAL
+          process.env.JOIN_EVENT_LINK
         }>Click Here</a> and use<p><br><strong>Invite Code: ${
           guest.invite_code
         }</strong> to RSVP and select the food you will be bringing to the event`,
@@ -58,7 +58,7 @@ router.get("/single/:id", tokenVerified, async (req, res) => {
         html: `<h1>Welcome ${
           guest.email.split("@")[0]
         }</h1><p>You have been invited to an event please <a href=${
-          process.env.JOIN_EVENT_LINK_LOCAL
+          process.env.JOIN_EVENT_LINK
         }>Click Here</a> and use<p><br><strong>Invite Code: ${
           guest.invite_code
         }</strong> to RSVP and select the food you will be bringing to the event`,
